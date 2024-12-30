@@ -1,25 +1,27 @@
 #!/bin/bash
 apt update && apt upgrade -y
-apt install curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
+sudo apt install -y curl git jq lz4 build-essential
 
 sudo rm -rf /usr/local/go
-curl -Ls https://go.dev/dl/go1.23.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -Ls https://go.dev/dl/go1.22.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 echo "export PATH=$PATH:/usr/local/go/bin:/usr/local/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 cd $HOME
-wget -O $HOME/zetacored https://github.com/zeta-chain/node/releases/download/v24.0.0/zetacored-linux-amd64
-chmod +x $HOME/zetacored 
-mv $HOME/zetacored $HOME/go/bin
-​make install
+rm -rf node
+git clone https://github.com/zeta-chain/node
+cd node
+git checkout v24.0.0
+
+make install
 
 zetacored init test --chain-id=zetachain_7000-1
 zetacored config chain-id zetachain_7000-1
 
-wget -O $HOME/.zetacored/config/genesis.json https://server-2.itrocket.net/mainnet/zetachain/genesis.json
-wget -O $HOME/.zetacored/config/addrbook.json  https://server-2.itrocket.net/mainnet/zetachain/addrbook.json
+curl -L https://snapshots.nodejumper.io/zetachain/genesis.json > $HOME/.zetacored/config/genesis.json
+curl -L https://snapshots.nodejumper.io/zetachain/addrbook.json > $HOME/.zetacored/config/addrbook.json
 
 SEEDS="4e668be2d80d3475d2350e313bc75b8f0646884f@zetachain-mainnet-seed.itrocket.net:39656"
 PEERS="372e9c80f723491daf2b05b3aa368865f6bc3492@zetachain-mainnet-peer.itrocket.net:39656,d56a65e856443cf97fab922580de21cb234de51f@34.66.19.0:26656,eb1441901c7008d180edd0853af9bd8148c95a94@162.55.96.250:26656,e0b89511a7a31d7867c00cfba748b474f853ac49@148.251.140.252:26656,35e621bf11455cee613833243f268a1ba83aabb5@64.176.47.152:26656,77a26a60e44730311d05b2b653031badb52d493d@64.176.57.149:26656,d98525ae59a00f7a099ddaec2a7e416e818bb210@15.235.115.91:26656,c0ce318fcc98e89ce906bfba0f68df5a3774652d@65.108.197.253:21850,506f82713cc3a95b8f28e89930c047daa47db74e@64.176.57.214:26656,927860d6e888a5dee988cceed734e9dad0b569bc@176.9.137.150:26656,55947af1b1db1192b649563a01fa69f0b5d6ee03@142.132.198.157:26656,5e8e37464dcc2d9dd21b04a2c45b9ae1361eaa59@5.9.108.22:26656,cd48a06521de9f97e6413fec1188ffabb7069b19@5.9.106.71:21850,6d8296e6222eb992ff4814d950ed30630f924253@45.76.180.32:26656,d8730c76daaf371900159ab8c6e00bc3950eff79@64.176.39.37:26656"
@@ -58,12 +60,7 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-zetacored tendermint unsafe-reset-all --home $HOME/.zetacored
-if curl -s --head curl https://server-2.itrocket.net/mainnet/zetachain/zetachain_2024-12-30_6376912_snap.tar.lz4 | head -n 1 | grep "200" > /dev/null; then
-  curl https://server-2.itrocket.net/mainnet/zetachain/zetachain_2024-12-30_6376912_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.zetacored
-    else
-  echo "no snapshot found"
-fi
+curl "https://snapshots.nodejumper.io/zetachain/zetachain_latest.tar.lz4" | lz4 -dc - | tar -xf - -C "$HOME/.zetacored"
 
 sudo systemctl daemon-reload
 sudo systemctl enable zetacored
