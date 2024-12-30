@@ -55,9 +55,9 @@ ExecStart=$(which zetacored) start --home $HOME/.zetacored
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
+
 [Install]
-​
-WantedBy=multi-user.target
+​WantedBy=multi-user.target
 EOF
 
 curl "https://snapshots.nodejumper.io/zetachain/zetachain_latest.tar.lz4" | lz4 -dc - | tar -xf - -C "$HOME/.zetacored"
