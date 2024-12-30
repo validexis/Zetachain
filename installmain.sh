@@ -43,12 +43,11 @@ sed -i -e "s%^address = \"tcp://localhost:1317\"%address = \"tcp://localhost:${C
 
 zetacored config node tcp://localhost:${CUSTOM_PORT}57
 
-
 sudo tee /etc/systemd/system/zetacored.service > /dev/null <<EOF
-​[Unit]
+[Unit]
 Description=Zetachain node
 After=network-online.target
-​
+
 [Service]
 User=$USER
 WorkingDirectory=$HOME/.zetacored
@@ -58,7 +57,7 @@ RestartSec=5
 LimitNOFILE=65535
 
 [Install]
-​WantedBy=multi-user.target
+WantedBy=multi-user.target
 EOF
 
 curl "https://snapshots.nodejumper.io/zetachain/zetachain_latest.tar.lz4" | lz4 -dc - | tar -xf - -C "$HOME/.zetacored"
