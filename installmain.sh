@@ -17,17 +17,13 @@ git checkout v24.0.0
 
 make install
 
-zetacored init test --chain-id=zetachain_7000-1
+zetacored init NODE --chain-id=zetachain_7000-1
 zetacored config chain-id zetachain_7000-1
 
 curl -L https://snapshots.nodejumper.io/zetachain/genesis.json > $HOME/.zetacored/config/genesis.json
 curl -L https://snapshots.nodejumper.io/zetachain/addrbook.json > $HOME/.zetacored/config/addrbook.json
 
-SEEDS="4e668be2d80d3475d2350e313bc75b8f0646884f@zetachain-mainnet-seed.itrocket.net:39656"
-PEERS="372e9c80f723491daf2b05b3aa368865f6bc3492@zetachain-mainnet-peer.itrocket.net:39656,d56a65e856443cf97fab922580de21cb234de51f@34.66.19.0:26656,eb1441901c7008d180edd0853af9bd8148c95a94@162.55.96.250:26656,e0b89511a7a31d7867c00cfba748b474f853ac49@148.251.140.252:26656,35e621bf11455cee613833243f268a1ba83aabb5@64.176.47.152:26656,77a26a60e44730311d05b2b653031badb52d493d@64.176.57.149:26656,d98525ae59a00f7a099ddaec2a7e416e818bb210@15.235.115.91:26656,c0ce318fcc98e89ce906bfba0f68df5a3774652d@65.108.197.253:21850,506f82713cc3a95b8f28e89930c047daa47db74e@64.176.57.214:26656,927860d6e888a5dee988cceed734e9dad0b569bc@176.9.137.150:26656,55947af1b1db1192b649563a01fa69f0b5d6ee03@142.132.198.157:26656,5e8e37464dcc2d9dd21b04a2c45b9ae1361eaa59@5.9.108.22:26656,cd48a06521de9f97e6413fec1188ffabb7069b19@5.9.106.71:21850,6d8296e6222eb992ff4814d950ed30630f924253@45.76.180.32:26656,d8730c76daaf371900159ab8c6e00bc3950eff79@64.176.39.37:26656"
-sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
-       -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.zetacored/config/config.toml
-
+sed -i -e 's|^seeds *=.*|seeds = "20e1000e88125698264454a884812746c2eb4807@seeds.lavenderfive.com:22556,1d41d344d3370d2ba54332de4967baa5cbd70a06@rpc.zetachain.nodestake.org:666,ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:22556,8d93468c6022fb3b263963bdea46b0a131d247cd@34.28.196.79:26656,637077d431f618181597706810a65c826524fd74@zetachain.rpc.nodeshub.online:22556,11b86546b092e0645a91b32ca78e40c8bec54546@zetachain-m.peer.stavr.tech:17656"|' $HOME/.zetacored/config/config.toml
 sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.0azeta"|g' $HOME/.zetacored/config/app.toml
 sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.zetacored/config/config.toml
 sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.zetacored/config/config.toml
