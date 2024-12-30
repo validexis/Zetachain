@@ -24,7 +24,7 @@ curl -L https://snapshots.nodejumper.io/zetachain/genesis.json > $HOME/.zetacore
 curl -L https://snapshots.nodejumper.io/zetachain/addrbook.json > $HOME/.zetacored/config/addrbook.json
 
 sed -i -e 's|^seeds *=.*|seeds = "20e1000e88125698264454a884812746c2eb4807@seeds.lavenderfive.com:22556,1d41d344d3370d2ba54332de4967baa5cbd70a06@rpc.zetachain.nodestake.org:666,ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:22556,8d93468c6022fb3b263963bdea46b0a131d247cd@34.28.196.79:26656,637077d431f618181597706810a65c826524fd74@zetachain.rpc.nodeshub.online:22556,11b86546b092e0645a91b32ca78e40c8bec54546@zetachain-m.peer.stavr.tech:17656"|' $HOME/.zetacored/config/config.toml
-sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.0azeta"|g' $HOME/.zetacored/config/app.toml
+sed -i -e 's|^minimum-gas-prices *=.*|minimum-gas-prices = "20000000000azeta"|' $HOME/.zetacored/config/app.toml
 sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.zetacored/config/config.toml
 sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.zetacored/config/config.toml
 
