@@ -43,7 +43,6 @@ sudo tee /etc/systemd/system/zetacored.service > /dev/null <<EOF
 [Unit]
 Description=Zetachain node
 After=network-online.target
-
 [Service]
 User=$USER
 WorkingDirectory=$HOME/.zetacored
@@ -51,7 +50,6 @@ ExecStart=$(which zetacored) start --home $HOME/.zetacored
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
-
 [Install]
 WantedBy=multi-user.target
 EOF
