@@ -10,12 +10,9 @@ echo "export PATH=$PATH:/usr/local/go/bin:/usr/local/bin:$HOME/go/bin" >> $HOME/
 source $HOME/.bash_profile
 
 cd $HOME
-rm -rf node
-git clone https://github.com/zeta-chain/node
-cd node
-git checkout v24.0.0
-
-make install
+wget -O $HOME/zetacored https://github.com/zeta-chain/node/releases/download/v26.0.0/zetacored-linux-amd64
+chmod +x $HOME/zetacored 
+mv $HOME/zetacored $HOME/go/bin
 
 zetacored init NODE --chain-id=zetachain_7000-1
 zetacored config chain-id zetachain_7000-1
