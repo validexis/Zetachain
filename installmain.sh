@@ -10,7 +10,7 @@ echo "export PATH=$PATH:/usr/local/go/bin:/usr/local/bin:$HOME/go/bin" >> $HOME/
 source $HOME/.bash_profile
 
 cd $HOME
-wget -O $HOME/zetacored https://github.com/zeta-chain/node/releases/download/v28.0.0/zetacored-linux-amd64
+wget -O $HOME/zetacored https://github.com/zeta-chain/node/releases/download/v29.1.2/zetacored-linux-amd64
 chmod +x $HOME/zetacored 
 mv $HOME/zetacored $HOME/go/bin
 
